@@ -4,19 +4,21 @@ This is a Discord clone with real-time chat and video functionality. You'll buil
 
 [Tutorial](tutorial/tutorial.ipynb)
 
-Tech Stacks: 
-* Typescript
-* Tailwind CSS
-* Nodejs
-* Convex for backedn API
-* Clerk for authorization
+Tech Stacks:
+
+- Typescript
+- Tailwind CSS
+- Nodejs
+- Convex for backedn API
+- Clerk for authorization
 
 Skills:
-* Chat and Video
-* 
 
+- Chat and Video
+-
 
 ## Sources
+
 [Tour of Convex](https://docs.convex.dev/get-started)
 [Convex Functions](https://docs.convex.dev/functions)
 [Convex Database](https://docs.convex.dev/database)
@@ -25,7 +27,19 @@ Skills:
 
 # Developer's Notes
 
+## Git
+
+```bash
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/itancio/chatstarter2.git
+git push -u origin main
+```
+
 ## Reinitialize convex
+
 npx convex dev --configure=existing --team irvin-tancioco --project proj-chatstarter
 
 ```bash
@@ -50,9 +64,9 @@ npx convex dev --configure=existing --team irvin-tancioco --project proj-chatsta
 ```
 
 ## package for sycning clerk data to your webhook
+
 [Sync Clerk data to your application with webhooks](https://clerk.com/docs/integrations/webhooks/sync-data#install-svix)
+
 ```bash
     pnpm add svix
 ```
-
-
