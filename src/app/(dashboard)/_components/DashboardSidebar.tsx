@@ -22,7 +22,7 @@ import { User2Icon, XCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { api } from "../../../../convex/_generated/api";
-import { NewDirectMessage } from "./new-direct-message";
+import { NewDirectMessage } from "./NewDirectMessage";
 
 function DashboardSidebar() {
   const user = useQuery(api.functions.user.get);
