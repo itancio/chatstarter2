@@ -3,7 +3,7 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { Authenticated, Unauthenticated } from "convex/react";
-import DashboardSidebar from "./_components/sidebar";
+import DashboardSidebar from "./_components/DashboardSidebar";
 export default function DashboardLayout({
   children,
 }: {
