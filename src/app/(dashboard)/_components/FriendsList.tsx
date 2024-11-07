@@ -60,7 +60,7 @@ export function AcceptedFriendsList() {
 
   const createDirectMessage = useMutation(api.functions.dm.create);
   const router = useRouter();
-  const startDirectMessage = async (id: Id<"users">) => {
+  const startDirectMessage = async (id: string) => {
     try {
       const directMessageId = await createDirectMessage({ username: id });
       router.push(`/dms/${directMessageId}`);
@@ -78,27 +78,31 @@ export function AcceptedFriendsList() {
         {friends?.length == 0 && (
           <FriendsListEmpty>No friend requests yet</FriendsListEmpty>
         )}
-        {friends?.map((friend, index) => (
-          <FriendItem
-            key={index}
-            username={friend.user.username}
-            image={friend.user.image}
-          >
-            <IconButton
-              title="Start DM"
-              icon={<MessageCircleIcon />}
-              onClick={() => startDirectMessage(friend.user._id)}
-            />
-            <IconButton
-              className="bg-red-100"
-              title="Remove Friend"
-              icon={<XIcon />}
-              onClick={() =>
-                updateStatus({ id: friend._id, status: "rejected" })
-              }
-            />
-          </FriendItem>
-        ))}
+        {friends?.map((friend, index) => {
+          console.log("Friend object:", friend.user.username);
+
+          return (
+            <FriendItem
+              key={index}
+              username={friend.user.username}
+              image={friend.user.image}
+            >
+              <IconButton
+                title="Start DM"
+                icon={<MessageCircleIcon />}
+                onClick={() => startDirectMessage(friend.user.username)}
+              />
+              <IconButton
+                className="bg-red-100"
+                title="Remove Friend"
+                icon={<XIcon />}
+                onClick={() =>
+                  updateStatus({ id: friend._id, status: "rejected" })
+                }
+              />
+            </FriendItem>
+          );
+        })}
       </div>
     </>
   );
