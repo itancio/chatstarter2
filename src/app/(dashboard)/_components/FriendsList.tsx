@@ -1,14 +1,16 @@
-import { useMutation, useQuery } from "convex/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { CheckIcon, MessageCircleIcon, XIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useMutation, useQuery } from "convex/react";
+import { CheckIcon, MessageCircleIcon, XIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 export function PendingFriendsList() {
   const friends = useQuery(api.functions.friend.listPending);
@@ -54,8 +56,19 @@ export function PendingFriendsList() {
 
 export function AcceptedFriendsList() {
   const friends = useQuery(api.functions.friend.listAccepted);
-
   const updateStatus = useMutation(api.functions.friend.updateStatus);
+
+  const createDirectMessage = useMutation(api.functions.dm.create);
+  const router = useRouter();
+  const startDirectMessage = async (id: Id<"users">) => {
+    try {
+      const directMessageId = await createDirectMessage({ username: id });
+      router.push(`/dms/${directMessageId}`);
+    } catch (error) {
+      console.error("Failed to create direct message: ", error);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col divide-y">
@@ -74,7 +87,7 @@ export function AcceptedFriendsList() {
             <IconButton
               title="Start DM"
               icon={<MessageCircleIcon />}
-              onClick={() => {}}
+              onClick={() => startDirectMessage(friend.user._id)}
             />
             <IconButton
               className="bg-red-100"

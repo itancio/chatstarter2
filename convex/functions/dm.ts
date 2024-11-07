@@ -3,6 +3,7 @@ import { authenticatedMutation, authenticatedQuery } from "./helpers";
 import { QueryCtx } from "../_generated/server";
 import { Doc, Id } from "../_generated/dataModel";
 
+// Retrieves all direct messages associated with the current user.
 export const list = authenticatedQuery({
   handler: async (ctx) => {
     const directMessages = await ctx.db
@@ -15,6 +16,8 @@ export const list = authenticatedQuery({
   },
 });
 
+// Fetches a specific direct message by ID,
+// verifying that the current user is a member of that direct message.
 export const get = authenticatedQuery({
   args: {
     id: v.id("directMessages"),
@@ -34,6 +37,8 @@ export const get = authenticatedQuery({
   },
 });
 
+// Creates a new direct message between the authenticated user
+// and another user (specified by username) if one does not already exist.
 export const create = authenticatedMutation({
   args: {
     username: v.string(),
