@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -16,20 +18,28 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { SignOutButton } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
+import { RedirectToSignIn, SignOutButton } from "@clerk/nextjs";
+import { useConvexAuth, useQuery } from "convex/react";
 import { User2Icon, XCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { api } from "../../../../convex/_generated/api";
 import { NewDirectMessage } from "./NewDirectMessage";
+import { useEffect } from "react";
 
 function DashboardSidebar() {
+  const { isAuthenticated } = useConvexAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      <RedirectToSignIn />;
+    }
+  }, [isAuthenticated]);
+
   const user = useQuery(api.functions.user.get);
   const directMessages = useQuery(api.functions.dm.list);
   const pathname = usePathname();
 
-  if (!user) return null;
   return (
     <>
       <Sidebar>
@@ -81,28 +91,26 @@ function DashboardSidebar() {
         <SidebarFooter>
           <SidebarGroup>
             <SidebarGroupContent>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton className="lex items-center">
-                          <Avatar className="size-6">
-                            <AvatarImage src={user.image} />
-                            <AvatarFallback>{user.username[0]}</AvatarFallback>
-                          </Avatar>
-                          <p className="font-medium">{user.username}</p>
-                        </SidebarMenuButton>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem asChild>
-                          <SignOutButton />
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <SidebarMenuButton className="flex items-center">
+                        <Avatar className="size-6">
+                          <AvatarImage src={user?.image} />
+                          <AvatarFallback>{user?.username[0]}</AvatarFallback>
+                        </Avatar>
+                        <p className="font-medium">{user?.username}</p>
+                      </SidebarMenuButton>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem asChild>
+                        <SignOutButton />
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </SidebarMenuItem>
+              </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarFooter>
